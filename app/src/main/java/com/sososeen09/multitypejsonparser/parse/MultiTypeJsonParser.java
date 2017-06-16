@@ -1,4 +1,4 @@
-package com.sososeen09.multitypejsonparser;
+package com.sososeen09.multitypejsonparser.parse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,28 +19,21 @@ public class MultiTypeJsonParser<T> {
     private HashMap<String, Class<? extends T>> typeClassMap = new HashMap<>();
     private String typeElementName;
     private String typeElementValue;
-    private Class<?> adaptedClass;
-    private Class<?> adaptedUpperLevelClass;
-    private Gson gson;
-    private Gson pureGson;
+    private Class<T> targetClass;
+    private Class<?> targetUpperLevelClass;
+    private Gson parseGson;
+    private Gson targetParseGson; //只对目标类进行解析,不包含外层的类
     private Builder<T> mBuilder;
-
-    public Gson getPureGson() {
-        if (pureGson == null) {
-            pureGson = new Gson();
-        }
-        return pureGson;
-    }
 
     private MultiTypeJsonParser() {
     }
 
     public <V> V fromJson(String json, Class<V> jsonFeedsClass) {
-        return gson.fromJson(json, jsonFeedsClass);
+        return parseGson.fromJson(json, jsonFeedsClass);
     }
 
     public <V> V fromJson(String json, Type jsonFeedsClass) {
-        return gson.fromJson(json, jsonFeedsClass);
+        return parseGson.fromJson(json, jsonFeedsClass);
     }
 
     private void setTypeElementValue(String typeElementValue) {
@@ -55,18 +48,20 @@ public class MultiTypeJsonParser<T> {
         return mBuilder;
     }
 
-    private Gson getAdaptedTargetGson() {
-        return new GsonBuilder().registerTypeAdapter(adaptedClass, this.getBuilder().getTypeAdapter()).create();
+    private Gson getTargetGson() {
+        if (targetParseGson == null) {
+            targetParseGson = new GsonBuilder().registerTypeAdapter(targetClass, this.getBuilder().getTypeAdapter()).create();
+        }
+        return targetParseGson;
     }
 
-
     public static class Builder<T> {
-        private MultiTypeJsonParser<T> mMultiTypeJsonParser;
-        private TargetDeserializer mTypeAdapter;
+        private MultiTypeJsonParser<T> multiTypeJsonParser;
+        private TargetDeserializer typeAdapter;
 
         public Builder() {
-            mMultiTypeJsonParser = new MultiTypeJsonParser<>();
-            mMultiTypeJsonParser.mBuilder = this;
+            multiTypeJsonParser = new MultiTypeJsonParser<>();
+            multiTypeJsonParser.mBuilder = this;
         }
 
         /**
@@ -76,7 +71,7 @@ public class MultiTypeJsonParser<T> {
          * @return
          */
         public Builder<T> registerTypeElementName(String typeElementName) {
-            mMultiTypeJsonParser.typeElementName = typeElementName;
+            multiTypeJsonParser.typeElementName = typeElementName;
             return this;
         }
 
@@ -88,7 +83,7 @@ public class MultiTypeJsonParser<T> {
          * @return
          */
         public Builder<T> registerTypeElementValueWithClassType(String typeElementValue, Class<? extends T> classValue) {
-            mMultiTypeJsonParser.typeClassMap.put(typeElementValue, classValue);
+            multiTypeJsonParser.typeClassMap.put(typeElementValue, classValue);
             return this;
         }
 
@@ -99,7 +94,7 @@ public class MultiTypeJsonParser<T> {
          * @return
          */
         public Builder<T> registerTargetClass(Class<T> adaptedClass) {
-            mMultiTypeJsonParser.adaptedClass = adaptedClass;
+            multiTypeJsonParser.targetClass = adaptedClass;
             return this;
         }
 
@@ -110,34 +105,38 @@ public class MultiTypeJsonParser<T> {
          * @return
          */
         public Builder<T> registerTargetUpperLevelClass(Class<?> adaptedUpperLevelClass) {
-            mMultiTypeJsonParser.adaptedUpperLevelClass = adaptedUpperLevelClass;
+            multiTypeJsonParser.targetUpperLevelClass = adaptedUpperLevelClass;
             return this;
         }
 
         public MultiTypeJsonParser<T> build() {
-            mTypeAdapter = new TargetDeserializer(mMultiTypeJsonParser);
+            typeAdapter = new TargetDeserializer(multiTypeJsonParser);
             GsonBuilder gsonBuilder = new GsonBuilder();
 
-            if (mMultiTypeJsonParser.adaptedClass == null) {
-                throw new IllegalStateException("adaptedClass can not be Null: ");
+            if (multiTypeJsonParser.targetClass == null) {
+                throw new IllegalStateException("targetClass can not be Null: ");
             }
 
-            gsonBuilder.registerTypeAdapter(mMultiTypeJsonParser.adaptedClass, mTypeAdapter);
+            gsonBuilder.registerTypeAdapter(multiTypeJsonParser.targetClass, typeAdapter);
 
-            if (mMultiTypeJsonParser.adaptedUpperLevelClass != null) {
-                gsonBuilder.registerTypeAdapter(mMultiTypeJsonParser.adaptedUpperLevelClass, new TargetUpperLevelDeserializer(mMultiTypeJsonParser));
+            if (multiTypeJsonParser.targetUpperLevelClass != null) {
+                gsonBuilder.registerTypeAdapter(multiTypeJsonParser.targetUpperLevelClass, new TargetUpperLevelDeserializer(multiTypeJsonParser));
             }
 
-            mMultiTypeJsonParser.gson = gsonBuilder.create();
-            return mMultiTypeJsonParser;
+            multiTypeJsonParser.parseGson = gsonBuilder.create();
+            return multiTypeJsonParser;
         }
 
         private TargetDeserializer getTypeAdapter() {
-            return mTypeAdapter;
+            return typeAdapter;
         }
 
         private String getString(JsonElement jsonElement) {
             return jsonElement.isJsonNull() ? "" : jsonElement.getAsString();
+        }
+
+        private boolean checkHasRegistered(String typeValue) {
+            return multiTypeJsonParser.typeClassMap.containsKey(typeValue);
         }
 
         private class TargetDeserializer implements JsonDeserializer<T> {
@@ -151,7 +150,7 @@ public class MultiTypeJsonParser<T> {
             @Override
             public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                     throws JsonParseException {
-                Gson gson = mGeneralJsonParser.gson;
+                Gson gson = mGeneralJsonParser.parseGson;
                 JsonObject jsonObject = (JsonObject) json;
                 JsonElement jsonElement = jsonObject.get(mGeneralJsonParser.typeElementName);
                 T item;
@@ -163,6 +162,12 @@ public class MultiTypeJsonParser<T> {
                     //未包含type，那么就用上一层级的type对应的value
                     contentType = mGeneralJsonParser.getTypeElementValue();
                 }
+
+                // 未注册的类型直接返回null
+                if (!checkHasRegistered(contentType)) {
+                    return null;
+                }
+
                 item = gson.fromJson(json, mGeneralJsonParser.typeClassMap.get(contentType));
                 onTargetItemDeserialize(item, contentType);
                 return item;
@@ -170,41 +175,56 @@ public class MultiTypeJsonParser<T> {
 
         }
 
+        /**
+         * 当目标类解析之后供子类调用
+         *
+         * @param item
+         * @param typeElementValue
+         */
         protected void onTargetItemDeserialize(T item, String typeElementValue) {
 
         }
 
+        /**
+         * 当目标类外层的类解析之后供子类调用
+         *
+         * @param item
+         * @param typeElementValue
+         */
         protected void onTargetUpperItemDeserialize(Object item, String typeElementValue) {
 
         }
 
         private class TargetUpperLevelDeserializer implements JsonDeserializer<Object> {
 
-            private final MultiTypeJsonParser mMultiTypeJsonParser;
+            private final MultiTypeJsonParser multiTypeJsonParser;
 
             private TargetUpperLevelDeserializer(MultiTypeJsonParser multiTypeJsonParser) {
-                this.mMultiTypeJsonParser = multiTypeJsonParser;
+                this.multiTypeJsonParser = multiTypeJsonParser;
             }
 
             @Override
             public Object deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                     throws JsonParseException {
                 //新建一个Gson,不再对AdaptedUpperLevelClass进行注册
-                Gson gson = mMultiTypeJsonParser.getAdaptedTargetGson();
+                Gson gson = multiTypeJsonParser.getTargetGson();
                 JsonObject jsonObject = (JsonObject) json;
                 String typeValue = null;
-                if (jsonObject.has(mMultiTypeJsonParser.typeElementName)) {
+                if (jsonObject.has(multiTypeJsonParser.typeElementName)) {
                     //如果包含type字段，就把对应的value传递给下一层级
-                    typeValue = getString(jsonObject.get(mMultiTypeJsonParser.typeElementName));
-                    mMultiTypeJsonParser.setTypeElementValue(typeValue);
+                    typeValue = getString(jsonObject.get(multiTypeJsonParser.typeElementName));
+                    multiTypeJsonParser.setTypeElementValue(typeValue);
+                }
+
+                // 未注册的类型直接返回null
+                if (!checkHasRegistered(typeValue)) {
+                    return null;
                 }
                 Object item;
-                item = gson.fromJson(json, mMultiTypeJsonParser.adaptedUpperLevelClass);
+                item = gson.fromJson(json, multiTypeJsonParser.targetUpperLevelClass);
                 onTargetUpperItemDeserialize(item, typeValue);
                 return item;
             }
-
-
         }
 
     }
