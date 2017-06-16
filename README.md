@@ -53,7 +53,6 @@
 
 MultiTypeJsonParser<Attribute> multiTypeJsonParser = new MultiTypeJsonParser.Builder<Attribute>()
         .registerTypeElementName("type")
-        .registerDataElementName("attributes")
         .registerTargetClass(Attribute.class)
         .registerTargetUpperLevelClass(AttributeWithType.class)
         .registerTypeElementValueWithClassType("address", AddressAttribute.class)

@@ -19,7 +19,6 @@ public class MultiTypeJsonParser<T> {
     private HashMap<String, Class<? extends T>> typeClassMap = new HashMap<>();
     private String typeElementName;
     private String typeElementValue;
-    private String dataElementName;
     private Class<?> adaptedClass;
     private Class<?> adaptedUpperLevelClass;
     private Gson gson;
@@ -80,18 +79,6 @@ public class MultiTypeJsonParser<T> {
             mMultiTypeJsonParser.typeElementName = typeElementName;
             return this;
         }
-
-        /**
-         * 注册能够表示需要解析的JsonObject的字段名
-         *
-         * @param dataElementName
-         * @return
-         */
-        public Builder<T> registerDataElementName(String dataElementName) {
-            mMultiTypeJsonParser.dataElementName = dataElementName;
-            return this;
-        }
-
 
         /**
          * 注册type对应的value值以及整个value值对应的Class

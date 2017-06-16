@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     public void parseAttribute1(View view) {
         MultiTypeJsonParser<Attribute> multiTypeJsonParser = new MultiTypeJsonParser.Builder<Attribute>()
                 .registerTypeElementName("type")
-                .registerDataElementName("attributes")
                 .registerTargetClass(Attribute.class)
                 .registerTargetUpperLevelClass(AttributeWithType.class)
                 .registerTypeElementValueWithClassType("address", AddressAttribute.class)
@@ -39,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     public void parseAttribute2(View view) {
         MultiTypeJsonParser<Attribute> multiTypeJsonParser = new MultiTypeJsonParser.Builder<Attribute>()
                 .registerTypeElementName("type")
-                .registerDataElementName("attributes")
                 .registerTargetClass(Attribute.class)
                 .registerTypeElementValueWithClassType("address", AddressAttribute.class)
                 .registerTypeElementValueWithClassType("name", NameAttribute.class)
