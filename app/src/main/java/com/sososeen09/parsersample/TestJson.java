@@ -1,4 +1,4 @@
-package com.sososeen09.multitypejsonparser;
+package com.sososeen09.parsersample;
 
 /**
  * Created by yunlong.su on 2017/6/15.

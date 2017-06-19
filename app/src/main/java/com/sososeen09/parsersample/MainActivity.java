@@ -1,18 +1,20 @@
-package com.sososeen09.multitypejsonparser;
+package com.sososeen09.parsersample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.sososeen09.multitypejsonparser.bean.AddressAttribute;
-import com.sososeen09.multitypejsonparser.bean.Attribute;
-import com.sososeen09.multitypejsonparser.bean.AttributeWithType;
-import com.sososeen09.multitypejsonparser.bean.ListInfoNoType;
-import com.sososeen09.multitypejsonparser.bean.ListInfoWithType;
-import com.sososeen09.multitypejsonparser.bean.NameAttribute;
 import com.sososeen09.multitypejsonparser.parse.ListItemFilter;
 import com.sososeen09.multitypejsonparser.parse.MultiTypeJsonParser;
+import com.sososeen09.parsersample.bean.AddressAttribute;
+import com.sososeen09.parsersample.bean.Attribute;
+import com.sososeen09.parsersample.bean.AttributeWithType;
+import com.sososeen09.parsersample.bean.ListInfoNoType;
+import com.sososeen09.parsersample.bean.ListInfoWithType;
+import com.sososeen09.parsersample.bean.NameAttribute;
+
+
 
 public class MainActivity extends AppCompatActivity {
 

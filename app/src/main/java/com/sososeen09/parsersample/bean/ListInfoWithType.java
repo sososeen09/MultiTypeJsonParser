@@ -1,4 +1,4 @@
-package com.sososeen09.multitypejsonparser.bean;
+package com.sososeen09.parsersample.bean;
 
 import java.util.List;
 

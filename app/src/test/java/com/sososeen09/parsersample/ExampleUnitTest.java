@@ -1,4 +1,4 @@
-package com.sososeen09.multitypejsonparser;
+package com.sososeen09.parsersample;
 
 import org.junit.Test;
 
