@@ -1,4 +1,23 @@
-# MultiTypeJsonParser
+# 如何使用
+
+```
+1.在项目root目录下的 build.gradle 添加:
+
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}Copy
+2. 添加依赖
+
+	dependencies {
+	        compile 'com.github.sososeen09:MultiTypeJsonParser:v0.0.1-SNAPSHOT'
+	}
+
+```
+
+# 功能
 
 不管是这样，
 
@@ -62,4 +81,7 @@ MultiTypeJsonParser<Attribute> multiTypeJsonParser = new MultiTypeJsonParser.Bui
 ListInfoWithType listInfoWithType = multiTypeJsonParser.fromJson(TestJson.TEST_JSON_1, ListInfoWithType.class);
 
 ```
+
+# 说明文档
+[采用Gson解析含有多种JsonObject的复杂json](http://www.jianshu.com/p/185e1ee9f05b)
 
