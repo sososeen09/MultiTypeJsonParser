@@ -5,15 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.google.gson.reflect.TypeToken;
 import com.sososeen09.multitypejsonparser.parse.ListItemFilter;
 import com.sososeen09.multitypejsonparser.parse.MultiTypeJsonParser;
 import com.sososeen09.parsersample.bean.AddressAttribute;
 import com.sososeen09.parsersample.bean.Attribute;
 import com.sososeen09.parsersample.bean.AttributeWithType;
+import com.sososeen09.parsersample.bean.generic.BaseListInfo;
+import com.sososeen09.parsersample.bean.generic.BaseUpperBean;
 import com.sososeen09.parsersample.bean.ListInfoNoType;
 import com.sososeen09.parsersample.bean.ListInfoWithType;
 import com.sososeen09.parsersample.bean.NameAttribute;
 
+import java.lang.reflect.Type;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -88,5 +92,22 @@ public class MainActivity extends AppCompatActivity {
         ListInfoNoType listInfoNoType = multiTypeJsonParser.fromJson(TestJson.TEST_JSON_WITH_UNKNOWN_TYPE2, ListInfoNoType.class);
         listInfoNoType.setList(ListItemFilter.filterNullElement(listInfoNoType.getList()));
         Log.d(TAG, "parseWithUnknownType2: " + listInfoNoType);
+    }
+
+    public void parseWithGeneric(View view) {
+        Type upperClass = new TypeToken<BaseUpperBean<Attribute>>() {
+        }.getType();
+        MultiTypeJsonParser<Attribute> multiTypeJsonParser = new MultiTypeJsonParser.Builder<Attribute>()
+                .registerTypeElementName("type")
+                .registerTargetClass(Attribute.class)
+                .registerTargetUpperLevelClass(upperClass)
+                .registerTypeElementValueWithClassType("address", AddressAttribute.class)
+                .registerTypeElementValueWithClassType("name", NameAttribute.class)
+                .build();
+
+        Type listInfoType = new TypeToken<BaseListInfo<BaseUpperBean<Attribute>>>() {
+        }.getType();
+        BaseListInfo<BaseUpperBean<Attribute>> listInfo = multiTypeJsonParser.fromJson(TestJson.TEST_JSON_1, listInfoType);
+        Log.d(TAG, "parseWithGeneric: " + listInfo);
     }
 }

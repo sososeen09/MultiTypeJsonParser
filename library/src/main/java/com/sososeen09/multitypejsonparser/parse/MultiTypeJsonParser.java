@@ -20,7 +20,7 @@ public class MultiTypeJsonParser<T> {
     private String typeElementName;
     private String typeElementValue;
     private Class<T> targetClass;
-    private Class<?> targetUpperLevelClass;
+    private Type targetUpperLevelClass;
     private Gson parseGson;
     private Gson targetParseGson; //只对目标类进行解析,不包含外层的类
     private Builder<T> mBuilder;
@@ -104,7 +104,7 @@ public class MultiTypeJsonParser<T> {
          * @param adaptedUpperLevelClass
          * @return
          */
-        public Builder<T> registerTargetUpperLevelClass(Class<?> adaptedUpperLevelClass) {
+        public Builder<T> registerTargetUpperLevelClass(Type adaptedUpperLevelClass) {
             multiTypeJsonParser.targetUpperLevelClass = adaptedUpperLevelClass;
             return this;
         }
