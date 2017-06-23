@@ -1,3 +1,4 @@
+[![](https://jitpack.io/v/sososeen09/MultiTypeJsonParser.svg)](https://jitpack.io/#sososeen09/MultiTypeJsonParser)
 # 如何使用
 
 
@@ -16,7 +17,7 @@ allprojects {
 
 ```
 dependencies {
-             compile 'com.github.sososeen09:MultiTypeJsonParser:v0.0.1-SNAPSHOT'
+             compile 'com.github.sososeen09:MultiTypeJsonParser:0.1.0'
 }
 ```
 
