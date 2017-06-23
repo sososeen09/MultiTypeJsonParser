@@ -4,21 +4,20 @@
 1.在项目root目录下的 build.gradle 添加:
 
 ```
-	allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
-	}
+allprojects {
+                    repositories {
+                    	...
+                    	maven { url 'https://jitpack.io' }
+                    }
+}
 ```
 
 2. 添加依赖
 
 ```
-	dependencies {
-	        compile 'com.github.sososeen09:MultiTypeJsonParser:v0.0.1-SNAPSHOT'
-	}
-
+dependencies {
+             compile 'com.github.sososeen09:MultiTypeJsonParser:v0.0.1-SNAPSHOT'
+}
 ```
 
 # 功能
