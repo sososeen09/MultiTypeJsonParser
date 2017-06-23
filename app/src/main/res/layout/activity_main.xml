@@ -8,7 +8,15 @@
     android:padding="16dp">
 
     <Button
-        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="generalParse"
+        android:text="generalParse"
+        android:textAllCaps="false"/>
+
+
+    <Button
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="parseAttribute1"
