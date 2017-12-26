@@ -17,7 +17,7 @@ allprojects {
 
 ```
 dependencies {
-             compile 'com.github.sososeen09:MultiTypeJsonParser:0.1.1'
+             compile 'com.github.sososeen09:MultiTypeJsonParser:0.1.2'
 }
 ```
 
