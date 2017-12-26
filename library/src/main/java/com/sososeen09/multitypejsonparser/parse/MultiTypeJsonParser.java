@@ -48,9 +48,17 @@ public class MultiTypeJsonParser<T> {
         return mBuilder;
     }
 
+    /**
+     * 获取注册过的类型个数
+     * @return
+     */
+    public int getSupportTypeSize() {
+        return typeClassMap.size();
+    }
 
     /**
      * 获取只解析目标类这一层的Gson
+     *
      * @return
      */
     public Gson getTargetParseGson() {
@@ -62,6 +70,7 @@ public class MultiTypeJsonParser<T> {
 
     /**
      * 获取可以解析包含目标类外层的Gson
+     *
      * @return
      */
     public Gson getParseGson() {
