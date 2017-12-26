@@ -48,11 +48,24 @@ public class MultiTypeJsonParser<T> {
         return mBuilder;
     }
 
-    private Gson getTargetGson() {
+
+    /**
+     * 获取只解析目标类这一层的Gson
+     * @return
+     */
+    public Gson getTargetParseGson() {
         if (targetParseGson == null) {
             targetParseGson = new GsonBuilder().registerTypeAdapter(targetClass, this.getBuilder().getTypeAdapter()).create();
         }
         return targetParseGson;
+    }
+
+    /**
+     * 获取可以解析包含目标类外层的Gson
+     * @return
+     */
+    public Gson getParseGson() {
+        return parseGson;
     }
 
     public static class Builder<T> {
@@ -207,7 +220,7 @@ public class MultiTypeJsonParser<T> {
             public Object deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                     throws JsonParseException {
                 //新建一个Gson,不再对AdaptedUpperLevelClass进行注册
-                Gson gson = multiTypeJsonParser.getTargetGson();
+                Gson gson = multiTypeJsonParser.getTargetParseGson();
                 JsonObject jsonObject = (JsonObject) json;
                 String typeValue = null;
                 if (jsonObject.has(multiTypeJsonParser.typeElementName)) {
