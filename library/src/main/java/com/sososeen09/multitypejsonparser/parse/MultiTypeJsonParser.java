@@ -24,6 +24,10 @@ public class MultiTypeJsonParser<T> {
     private Gson parseGson;
     private Gson targetParseGson; //只对目标类进行解析,不包含外层的类
     private Builder<T> mBuilder;
+    /**
+     * 是否强制使用目标类上一层的type对应的value，因为存在目标类和上一层type对应的value不同
+     */
+    private boolean forceUseUpperTypeValue;
 
     private MultiTypeJsonParser() {
     }
@@ -50,6 +54,7 @@ public class MultiTypeJsonParser<T> {
 
     /**
      * 获取注册过的类型个数
+     *
      * @return
      */
     public int getSupportTypeSize() {
@@ -131,6 +136,12 @@ public class MultiTypeJsonParser<T> {
             return this;
         }
 
+
+        public Builder<T> forceUseUpperTypeValue(boolean force) {
+            multiTypeJsonParser.forceUseUpperTypeValue = force;
+            return this;
+        }
+
         public MultiTypeJsonParser<T> build() {
             typeAdapter = new TargetDeserializer(multiTypeJsonParser);
             GsonBuilder gsonBuilder = new GsonBuilder();
@@ -177,12 +188,18 @@ public class MultiTypeJsonParser<T> {
                 JsonElement jsonElement = jsonObject.get(mGeneralJsonParser.typeElementName);
                 T item;
                 String contentType;
-                if (jsonElement != null) {
-                    //jsonObject已经包含了"type":""的形式
-                    contentType = getString(jsonElement);
-                } else {
-                    //未包含type，那么就用上一层级的type对应的value
+
+                //如果强制使用上一层级的value
+                if (mGeneralJsonParser.forceUseUpperTypeValue) {
                     contentType = mGeneralJsonParser.getTypeElementValue();
+                } else {
+                    if (jsonElement != null) {
+                        //jsonObject已经包含了"type":""的形式
+                        contentType = getString(jsonElement);
+                    } else {
+                        //未包含type，那么就用上一层级的type对应的value
+                        contentType = mGeneralJsonParser.getTypeElementValue();
+                    }
                 }
 
                 // 未注册的类型直接返回null
