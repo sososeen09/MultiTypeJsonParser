@@ -17,7 +17,7 @@ allprojects {
 
 ```
 dependencies {
-             compile 'com.github.sososeen09:MultiTypeJsonParser:0.1.2'
+             compile 'com.github.sososeen09:MultiTypeJsonParser:0.1.3'
 }
 ```
 
@@ -85,7 +85,7 @@ MultiTypeJsonParser<Attribute> multiTypeJsonParser = new MultiTypeJsonParser.Bui
 ListInfoWithType listInfoWithType = multiTypeJsonParser.fromJson(TestJson.TEST_JSON_1, ListInfoWithType.class);
 
 ```
-
+[更新日志](/UPDATE_LOG.md)
 # 说明文档
 [采用Gson解析含有多种JsonObject的复杂json](http://www.jianshu.com/p/185e1ee9f05b)
 
