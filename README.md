@@ -1,6 +1,6 @@
 [![](https://jitpack.io/v/sososeen09/MultiTypeJsonParser.svg)](https://jitpack.io/#sososeen09/MultiTypeJsonParser)
-### 如何使用
 
+### 如何使用
 
 1.在项目root目录下的 build.gradle 添加:
 
@@ -85,9 +85,8 @@ ListInfoWithType listInfoWithType = multiTypeJsonParser.fromJson(TestJson.TEST_J
 ```
 
 > 示例项目中添加了新的示例，使用Retrofit进行网络请求，通过自定义Convert来使用MultiTypeJsonParser进行复杂Json的解析。
-复杂列表推荐使用一位大神写的开源框架，[MultiType](https://github.com/drake.et/MultiType)https://github.com/drakeet/MultiType
+复杂列表推荐使用一位大神写的开源框架:[MultiType](https://github.com/drake.et/MultiType)
 MultiTypeJsonParser结合MultiType，绝对会使得你的开发效率大大提升！
-
 
 [更新日志](/UPDATE_LOG.md)
 
