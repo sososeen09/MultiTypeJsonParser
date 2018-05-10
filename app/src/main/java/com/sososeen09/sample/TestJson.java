@@ -1,4 +1,4 @@
-package com.sososeen09.parsersample;
+package com.sososeen09.sample;
 
 /**
  * Created by yunlong.su on 2017/6/15.

@@ -1,4 +1,4 @@
-package com.sososeen09.parsersample.bean;
+package com.sososeen09.sample.bean;
 
 import java.util.List;
 

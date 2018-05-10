@@ -1,10 +1,10 @@
-package com.sososeen09.parsersample.bean;
+package com.sososeen09.sample.bean;
 
 /**
  * Created by yunlong.su on 2017/6/13.
  */
 
-public class AddressAttribute extends Attribute {
+public class Address extends Attribute {
 
     /**
      * street : NanJing Road

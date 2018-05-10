@@ -1,4 +1,4 @@
-package com.sososeen09.parsersample.bean.generic;
+package com.sososeen09.sample.bean.generic;
 
 /**
  * Created by yunlong.su on 2017/6/22.

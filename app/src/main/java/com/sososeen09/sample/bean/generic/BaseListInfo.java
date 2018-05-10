@@ -1,14 +1,15 @@
-package com.sososeen09.parsersample.bean;
+package com.sososeen09.sample.bean.generic;
 
 import java.util.List;
 
 /**
- * Created by yunlong.su on 2017/6/15.
+ * Created by yunlong.su on 2017/6/22.
  */
 
-public class ListInfoNoType {
+public class BaseListInfo<T> {
+
     private int total;
-    private List<Attribute> list;
+    private List<T> list;
 
     public int getTotal() {
         return total;
@@ -18,11 +19,11 @@ public class ListInfoNoType {
         this.total = total;
     }
 
-    public List<Attribute> getList() {
+    public List<T> getList() {
         return list;
     }
 
-    public void setList(List<Attribute> list) {
+    public void setList(List<T> list) {
         this.list = list;
     }
 }

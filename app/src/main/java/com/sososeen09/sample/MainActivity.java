@@ -1,7 +1,8 @@
-package com.sososeen09.parsersample;
+package com.sososeen09.sample;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -10,14 +11,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sososeen09.multitypejsonparser.parse.ListItemFilter;
 import com.sososeen09.multitypejsonparser.parse.MultiTypeJsonParser;
-import com.sososeen09.parsersample.bean.AddressAttribute;
-import com.sososeen09.parsersample.bean.Attribute;
-import com.sososeen09.parsersample.bean.AttributeWithType;
-import com.sososeen09.parsersample.bean.ListInfoNoType;
-import com.sososeen09.parsersample.bean.ListInfoWithType;
-import com.sososeen09.parsersample.bean.NameAttribute;
-import com.sososeen09.parsersample.bean.generic.BaseListInfo;
-import com.sososeen09.parsersample.bean.generic.BaseUpperBean;
+import com.sososeen09.sample.bean.Address;
+import com.sososeen09.sample.bean.Attribute;
+import com.sososeen09.sample.bean.AttributeWithType;
+import com.sososeen09.sample.bean.ListInfoNoType;
+import com.sososeen09.sample.bean.ListInfoWithType;
+import com.sososeen09.sample.bean.Name;
+import com.sososeen09.sample.bean.generic.BaseListInfo;
+import com.sososeen09.sample.bean.generic.BaseUpperBean;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
 
@@ -50,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
             Class<? extends Attribute> clazz;
             String type = innerJsonObject.getString("type");
             if (TextUtils.equals(type, "address")) {
-                clazz = AddressAttribute.class;
+                clazz = Address.class;
             } else if (TextUtils.equals(type, "name")) {
-                clazz = NameAttribute.class;
+                clazz = Name.class;
             } else {
                 //有未知的类型就跳过
                 continue;
@@ -75,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
                 .registerTypeElementName("type")
                 .registerTargetClass(Attribute.class)
                 .registerTargetUpperLevelClass(AttributeWithType.class)
-                .registerTypeElementValueWithClassType("address", AddressAttribute.class)
-                .registerTypeElementValueWithClassType("name", NameAttribute.class)
+                .registerTypeElementValueWithClassType("address", Address.class)
+                .registerTypeElementValueWithClassType("name", Name.class)
                 .build();
 
         ListInfoWithType listInfoWithType = multiTypeJsonParser.fromJson(TestJson.TEST_JSON_1, ListInfoWithType.class);
@@ -87,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
         MultiTypeJsonParser<Attribute> multiTypeJsonParser = new MultiTypeJsonParser.Builder<Attribute>()
                 .registerTypeElementName("type")
                 .registerTargetClass(Attribute.class)
-                .registerTypeElementValueWithClassType("address", AddressAttribute.class)
-                .registerTypeElementValueWithClassType("name", NameAttribute.class)
+                .registerTypeElementValueWithClassType("address", Address.class)
+                .registerTypeElementValueWithClassType("name", Name.class)
                 .build();
 
         ListInfoNoType listInfoNoType = multiTypeJsonParser.fromJson(TestJson.TEST_JSON_2, ListInfoNoType.class);
@@ -105,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
                 .registerTypeElementName("type")
                 .registerTargetClass(Attribute.class)
                 .registerTargetUpperLevelClass(AttributeWithType.class)
-                .registerTypeElementValueWithClassType("address", AddressAttribute.class)
-                .registerTypeElementValueWithClassType("name", NameAttribute.class)
+                .registerTypeElementValueWithClassType("address", Address.class)
+                .registerTypeElementValueWithClassType("name", Name.class)
                 .build();
 
         ListInfoWithType listInfoWithType = multiTypeJsonParser.fromJson(TestJson.TEST_JSON_WITH_UNKNOWN_TYPE1, ListInfoWithType.class);
@@ -125,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
         MultiTypeJsonParser<Attribute> multiTypeJsonParser = new MultiTypeJsonParser.Builder<Attribute>()
                 .registerTypeElementName("type")
                 .registerTargetClass(Attribute.class)
-                .registerTypeElementValueWithClassType("address", AddressAttribute.class)
-                .registerTypeElementValueWithClassType("name", NameAttribute.class)
+                .registerTypeElementValueWithClassType("address", Address.class)
+                .registerTypeElementValueWithClassType("name", Name.class)
                 .build();
 
         ListInfoNoType listInfoNoType = multiTypeJsonParser.fromJson(TestJson.TEST_JSON_WITH_UNKNOWN_TYPE2, ListInfoNoType.class);
@@ -141,13 +142,17 @@ public class MainActivity extends AppCompatActivity {
                 .registerTypeElementName("type")
                 .registerTargetClass(Attribute.class)
                 .registerTargetUpperLevelClass(upperClass)
-                .registerTypeElementValueWithClassType("address", AddressAttribute.class)
-                .registerTypeElementValueWithClassType("name", NameAttribute.class)
+                .registerTypeElementValueWithClassType("address", Address.class)
+                .registerTypeElementValueWithClassType("name", Name.class)
                 .build();
 
         Type listInfoType = new TypeToken<BaseListInfo<BaseUpperBean<Attribute>>>() {
         }.getType();
         BaseListInfo<BaseUpperBean<Attribute>> listInfo = multiTypeJsonParser.fromJson(TestJson.TEST_JSON_1, listInfoType);
         Log.d(TAG, "parseWithGeneric: " + listInfo);
+    }
+
+    public void useWithRetrofit(View view) {
+        startActivity(new Intent(this, AdapterActivity.class));
     }
 }

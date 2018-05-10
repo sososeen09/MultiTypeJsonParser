@@ -1,4 +1,4 @@
-package com.sososeen09.parsersample;
+package com.sososeen09.sample;
 
 import org.junit.Test;
 

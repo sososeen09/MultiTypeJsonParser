@@ -1,4 +1,4 @@
-package com.sososeen09.parsersample;
+package com.sososeen09.sample;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

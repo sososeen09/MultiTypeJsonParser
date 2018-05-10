@@ -1,4 +1,4 @@
-package com.sososeen09.parsersample.bean;
+package com.sososeen09.sample.bean;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by yunlong.su on 2017/6/13.
  */
 
-public class NameAttribute extends Attribute {
+public class Name extends Attribute {
 
 
     /**
