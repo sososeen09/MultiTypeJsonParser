@@ -1,4 +1,4 @@
-package com.sososeen09.sample;
+package com.sososeen09.sample.bean;
 
 /**
  * Created by yunlong.su on 2017/6/15.

@@ -1,8 +1,8 @@
 package com.sososeen09.sample;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +17,7 @@ import com.sososeen09.sample.bean.AttributeWithType;
 import com.sososeen09.sample.bean.ListInfoNoType;
 import com.sososeen09.sample.bean.ListInfoWithType;
 import com.sososeen09.sample.bean.Name;
+import com.sososeen09.sample.bean.TestJson;
 import com.sososeen09.sample.bean.generic.BaseListInfo;
 import com.sososeen09.sample.bean.generic.BaseUpperBean;
 
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 

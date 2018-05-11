@@ -1,8 +1,8 @@
 package com.sososeen09.sample;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,7 +22,7 @@ import me.drakeet.multitype.ClassLinker;
 import me.drakeet.multitype.ItemViewBinder;
 import me.drakeet.multitype.MultiTypeAdapter;
 
-public class AdapterActivity extends Activity {
+public class AdapterActivity extends AppCompatActivity {
 
     private static final String TAG = "AdapterActivity";
 
